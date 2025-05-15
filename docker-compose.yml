@@ -6,7 +6,7 @@ services:
     container_name: laravel_app
     volumes:
       # - laravel_data:/var/www
-      - ./laravel:/var/www # ← Agora usa a pasta local
+      - ./laravel:/var/www 
     networks:
       - laravel
     ports:
@@ -18,7 +18,7 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./laravel:/var/www
+      - ./laravel:/var/www           
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - app
