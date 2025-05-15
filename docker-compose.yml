@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    volumes:
+      # - laravel_data:/var/www
+      - ./laravel:/var/www # ← Agora usa a pasta local
+    networks:
+      - laravel
+    ports:
+      - 9000:9000
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: laravel_nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./laravel:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+
+  mongo:
+    image: mongo:6
+    container_name: laravel_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - laravel
+
+volumes:
+  laravel_data:
+  mongo_data:
+
+
+networks:
+  laravel:
+    driver: bridge
